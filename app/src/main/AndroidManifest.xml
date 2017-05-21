@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.joshua.zhangrui">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:name=".application.BaseApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".activity.core.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.core.RegisterActivity"/>
+        <activity android:name=".activity.teacher.CourseActivity">
+        </activity>
+        <activity android:name=".activity.teacher.AddCourseActivity">
+        </activity>
+        <activity android:name=".activity.student.JoinCourseActivity">
+        </activity>
+        <activity android:name=".activity.teacher.AddStudentActivity">
+        </activity>
+        <activity android:name=".activity.teacher.SubjectActivity">
+        </activity>
+        <activity android:name=".activity.teacher.AddSubjectActivity">
+        </activity>
+        <activity android:name=".activity.teacher.EditSubjectActivity">
+        </activity>
+        <activity android:name=".activity.student.LearnActivity">
+        </activity>
+        <activity android:name=".activity.student.LearnCourseActivity">
+        </activity>
+        <activity android:name=".activity.student.ExamActivity">
+        </activity>
+        <activity android:name=".activity.student.ExamCourseActivity">
+        </activity>
+        <activity android:name=".activity.student.QueryScoreActivity">
+        </activity>
+        <activity android:name=".activity.teacher.GradeManageActivity">
+        </activity>
+        <activity android:name=".activity.student.QuestionActivity">
+        </activity>
+        <activity android:name=".activity.student.AddQuestionActivity">
+        </activity>
+        <activity android:name=".activity.teacher.QuestionActivity">
+        </activity>
+        <activity android:name=".activity.student.QuestionDetailActivity">
+        </activity>
+        <activity android:name=".activity.teacher.QuestionDetailActivity">
+        </activity>
+        <activity android:name=".activity.core.StudentBaseActivity">
+        </activity>
+        <activity android:name=".activity.core.TeacherBaseActivity">
+        </activity>
+        <activity android:name=".activity.student.StudentInfoActivity">
+        </activity>
+        <activity android:name=".activity.student.ChangePwdActivity">
+        </activity>
+        <activity android:name=".activity.teacher.TeacherInfoActivity">
+        </activity>
+        <activity android:name=".activity.core.AdminBaseActivity">
+        </activity>
+        <activity android:name=".activity.admin.StudentManagerActivity">
+        </activity>
+        <activity android:name=".activity.admin.StudentInfoActivity">
+        </activity>
+        <activity android:name=".activity.admin.TeacherManagerActivity">
+        </activity>
+        <activity android:name=".activity.admin.TeacherInfoActivity">
+        </activity>
+        <activity android:name=".activity.admin.GradeManagerActivity">
+        </activity>
+        <activity android:name=".activity.admin.SubjectManagerActivity">
+        </activity>
+    </application>
+
+</manifest>

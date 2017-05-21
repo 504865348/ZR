@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="12dp"
+              android:layout_marginBottom="12dp"
+              android:background="@color/white"
+              android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="8dp"
+            android:src="@mipmap/app_logo"
+            />
+
+
+        <TextView
+            android:id="@+id/tv_subject_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="题目:昨天,第十三届全运会花样游泳比赛在天津奥体中心游泳跳水馆展开了第二个比赛日的较量,在自由组合预赛中,天津队发挥出色,收获了第五名的成绩,主力队员盛姝雯甚至激动"
+            />
+
+        <!--<TextView-->
+        <!--android:id="@+id/tv_answer"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="center"-->
+        <!--android:text="正确答案：A"-->
+        <!--/>-->
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_A"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="64dp"
+        android:gravity="left"
+        android:text="A.答案"
+        />
+
+    <TextView
+        android:id="@+id/tv_B"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="64dp"
+        android:gravity="left"
+        android:text="B.答案"
+        />
+
+    <TextView
+        android:id="@+id/tv_C"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="64dp"
+        android:gravity="left"
+        android:text="C.答案"
+        />
+
+    <TextView
+        android:id="@+id/tv_D"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="64dp"
+        android:gravity="left"
+        android:text="D.答案"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_margin="8dp"
+        android:background="@color/colorPrimary"
+        android:layout_height="1dp"/>
+
+</LinearLayout>

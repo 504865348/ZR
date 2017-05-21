@@ -1,0 +1,237 @@
+package com.joshua.zhangrui.activity.student;
+
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.joshua.zhangrui.R;
+import com.joshua.zhangrui.activity.core.BaseActivity;
+import com.joshua.zhangrui.activity.core.StudentBaseActivity;
+import com.joshua.zhangrui.activity.teacher.EditSubjectActivity;
+import com.joshua.zhangrui.entity.Question;
+import com.joshua.zhangrui.global.Server;
+import com.joshua.zhangrui.utils.JudgeUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
+
+import java.util.List;
+
+import static com.joshua.zhangrui.R.layout.list_course;
+
+@ContentView(R.layout.activity_question)
+public class QuestionActivity extends StudentBaseActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+    @ViewInject(R.id.btn_add_question)
+    FloatingActionButton btn_add_question;
+    @ViewInject(R.id.lv_question)
+    ListView lv_question;
+
+    private List<Question> list_question;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        btn_add_question.setOnClickListener(this);
+        initListView();
+    }
+
+    private void initListView() {
+        getDataFromServer();
+        lv_question.setDivider(null);
+        lv_question.setOnItemClickListener(this);
+        lv_question.setOnItemLongClickListener(this);
+    }
+
+    private void getDataFromServer() {
+        RequestParams params = new RequestParams(Server.SERVER);
+        params.addBodyParameter("method", Server.SERVER_ALL_QUESTION_STU);
+        params.addBodyParameter("para", getCurrentUser());
+
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.d(TAG, "getDataFromServer: " + result);
+                try {
+                    JSONObject jo = new JSONObject(result);
+                    String jsonList = JudgeUtils.getResult(jo.getString("flag"));
+                    parseData(jsonList);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                Toast.makeText(mBaseActivity, "网络异常", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+
+    }
+
+    private void parseData(String result) {
+        Gson gson = new Gson();
+        list_question = gson.fromJson(result, new TypeToken<List<Question>>() {
+        }.getType());
+
+        lv_question.setAdapter(new QuestionAdapter());
+    }
+
+
+
+
+    private class QuestionAdapter extends BaseAdapter {
+        @Override
+        public int getCount() {
+            return list_question.size();
+        }
+
+        @Override
+        public Question getItem(int position) {
+            return list_question.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if (convertView == null) {
+                convertView = View.inflate(mBaseActivity, R.layout.list_question,
+                        null);
+                holder = new ViewHolder();
+                holder.tv_asker_name = (TextView) convertView
+                        .findViewById(R.id.tv_asker_name);
+                holder.tv_question = (TextView) convertView
+                        .findViewById(R.id.tv_question);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            Question item = getItem(position);
+            holder.tv_asker_name.setText(item.getStudentName());
+            holder.tv_question.setText(item.getQuestion());
+
+            return convertView;
+        }
+
+    }
+
+    private static class ViewHolder {
+
+        TextView tv_asker_name;
+        TextView tv_question;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_add_question:
+                startActivity(new Intent(mBaseActivity, AddQuestionActivity.class));
+                break;
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Question question = list_question.get(position);
+        Intent intent = new Intent(mBaseActivity, QuestionDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("question", question);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        final String question = list_question.get(position).getQuestion();
+        AlertDialog.Builder builder=new AlertDialog.Builder(mBaseActivity);
+        builder.setTitle("确认")
+                .setMessage("是否删除问题")
+                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteQuestion(question);
+                    }
+                }).show();
+        return true;
+    }
+
+
+    private void deleteQuestion(String question) {
+        RequestParams params = new RequestParams(Server.SERVER);
+        params.addBodyParameter("method", Server.SERVER_DELETE_QUESTION);
+        params.addBodyParameter("para", getCurrentUser() + "&" + question );
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                JSONObject jo;
+                try {
+                    jo = new JSONObject(result);
+                    Log.d(TAG, "onSuccess: " + result);
+                    if (JudgeUtils.isTrue(jo.getString("flag"))) {
+                        Toast.makeText(mBaseActivity, "修改成功", Toast.LENGTH_SHORT).show();
+                        getDataFromServer();
+                    } else {
+                        Toast.makeText(mBaseActivity, "修改失败", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                Toast.makeText(mBaseActivity, "网络异常", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        getDataFromServer();
+    }
+}

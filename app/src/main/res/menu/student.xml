@@ -1,0 +1,29 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".activity.student.StudentActivity" >
+    <item
+        android:id="@+id/btn_student_info"
+        android:showAsAction="never"
+        android:title="个人信息"/>
+    <item
+        android:id="@+id/btn_join_course"
+        android:showAsAction="never"
+        android:title="添加课程"/>
+    <item
+        android:id="@+id/btn_learn_course"
+        android:showAsAction="never"
+        android:title="课程学习"/>
+    <item
+        android:id="@+id/btn_online_test"
+        android:showAsAction="never"
+        android:title="在线测验"/>
+    <item
+        android:id="@+id/btn_grade_query"
+        android:showAsAction="never"
+        android:title="成绩查询"/>
+    <item
+        android:id="@+id/btn_communicate_manage"
+        android:showAsAction="never"
+        android:title="师生互动"/>
+
+</menu>
